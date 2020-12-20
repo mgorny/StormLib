@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8.12)
 set(LIBRARY_NAME storm)
 
 include(CMakeDependentOption)
+include(GNUInstallDirs)
 
 option(BUILD_SHARED_LIBS "Compile shared libraries" OFF)
 option(STORM_SKIP_INSTALL "Skip installing files" OFF)
@@ -331,12 +332,12 @@ endif()
 
 if (NOT STORM_SKIP_INSTALL)
     install(TARGETS ${LIBRARY_NAME} 
-	    RUNTIME DESTINATION bin 
-	    LIBRARY DESTINATION lib 
-	    ARCHIVE DESTINATION lib 
+	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	    FRAMEWORK DESTINATION /Library/Frameworks
-	    PUBLIC_HEADER DESTINATION include
-	    INCLUDES DESTINATION include)
+	    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
         #CPack configurtion
         SET(CPACK_GENERATOR "DEB" "RPM")
@@ -369,6 +370,6 @@ endif()
 if(STORM_BUILD_TESTS)
     add_executable(StormLib_test ${TEST_SRC_FILES})
     target_link_libraries(StormLib_test ${LIBRARY_NAME})
-    install(TARGETS StormLib_test RUNTIME DESTINATION bin)
+    install(TARGETS StormLib_test RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
